@@ -12,6 +12,7 @@ securityapp/       Python package with the Flask application
   ├── qr_utils.py  – Helper to generate a base64 encoded QR code
 app/
   ├── index.html   – Example page showing a placeholder QR image
+  ├── scan_purchase.html – Demonstrates scanning a QR code and posting a purchase
   └── qr_placeholder.svg – Pre-generated SVG used by the page
 ```
 
@@ -41,6 +42,10 @@ endpoint is called.
 
 Open `app/index.html` in a browser to view a simple page that displays a placeholder QR
 code. The code was generated using `app/generate_placeholder_qr_svg.py`.
+
+`app/scan_purchase.html` demonstrates scanning a QR code with the browser camera
+and sending the decoded user ID along with an item name to the `/purchase`
+endpoint.
 
 ## License
 

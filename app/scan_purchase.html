@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8"/>
+<title>QR Purchase Scanner</title>
+<style>
+  body { font-family: Arial, sans-serif; margin: 20px; }
+  #reader { width: 300px; margin: 20px auto; }
+</style>
+</head>
+<body>
+<h1>QRコード購入登録</h1>
+<p>QRコードをカメラで読み取ると購入情報を <code>/purchase</code> エンドポイントへ送信します。</p>
+<label>商品名: <input type="text" id="item" value="sample_item"></label>
+<div id="reader"></div>
+<pre id="log"></pre>
+<script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
+<script>
+const log = document.getElementById('log');
+function appendLog(msg) { log.textContent += msg + "\n"; }
+
+function onScanSuccess(decodedText) {
+  appendLog(`QR読み取り成功: ${decodedText}`);
+  const item = document.getElementById('item').value;
+  fetch('/purchase', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ user_id: decodedText, item })
+  })
+  .then(r => r.json())
+  .then(data => appendLog(JSON.stringify(data)))
+  .catch(err => appendLog('送信エラー: ' + err));
+}
+
+new Html5Qrcode("reader").start({ facingMode: "environment" }, {
+  fps: 10,
+  qrbox: 250
+}, onScanSuccess);
+</script>
+</body>
+</html>
